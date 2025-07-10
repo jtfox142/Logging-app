@@ -13,29 +13,15 @@ struct ContentView: View {
     @Query private var items: [Item]
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        VStack {
+            HStack {
+                Text("Logger")
+                    .font(.system(size: 48, weight: .bold, design: .monospaced))
+                Image(systemName: "tree.fill")
+                    .symbolRenderingMode(.multicolor)
+                    .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 2.0)))
+                    .font(.system(size: 48))
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
         }
     }
 
