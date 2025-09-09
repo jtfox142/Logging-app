@@ -11,6 +11,7 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var logs: [Log]
+    @State private var path = [Log]()
 
     var body: some View {
         /*VStack {
@@ -23,35 +24,39 @@ struct ContentView: View {
                     .font(.system(size: 48))
             }
         }*/
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 ForEach(logs) { log in
-                    VStack(alignment: .leading) {
-                        Text(log.name)
-                            .font(.headline)
-                        Text(log.message)
-                            .foregroundColor(.secondary)
+                    NavigationLink(value: log) {
+                        VStack(alignment: .leading) {
+                            Text(log.name)
+                                .font(.headline)
+                            Text(log.message)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
+                .onDelete(perform: deleteLogs)
             }
             .navigationTitle(Text("Logs"))
             .toolbar {
-                Button("Add Log", action: addLog)
+                Button("Add Logs", systemImage: "plus", action: addLog)
             }
+            .navigationDestination(for: Log.self, destination: EditLogView.init)
         }
     }
-
-    private func addLog() {
-        withAnimation {
-            let newLog = Log(id: UUID(), date: Date(), name: "Test Log", message: "Hello, World!")
-            modelContext.insert(newLog)
-        }
+    
+    func addLog() {
+        let log = Log()
+        modelContext.insert(log)
+        path = [log]
     }
 
-    private func deleteLogs(offsets: IndexSet) {
+    private func deleteLogs(indexSet: IndexSet) {
         withAnimation {
-            for index in offsets {
-                modelContext.delete(logs[index])
+            for index in indexSet {
+                let log = logs[index]
+                modelContext.delete(log)
             }
         }
     }
