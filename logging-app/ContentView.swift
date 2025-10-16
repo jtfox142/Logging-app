@@ -25,7 +25,7 @@ struct ContentView: View {
             }
         }*/
         NavigationStack(path: $path) {
-            List {
+            /*List {
                 ForEach(logs) { log in
                     NavigationLink(value: log) {
                         VStack(alignment: .leading) {
@@ -33,11 +33,17 @@ struct ContentView: View {
                                 .font(.headline)
                             Text(log.message)
                                 .foregroundColor(.secondary)
+                                .lineLimit(2)
                         }
                     }
                 }
                 .onDelete(perform: deleteLogs)
-            }
+            }*/
+            List(logs) { log in
+                    NavigationLink(log.name) {
+                        LogDetailView(log: log)
+                    }
+                }
             .navigationTitle(Text("Logs"))
             .toolbar {
                 Button("Add Logs", systemImage: "plus", action: addLog)

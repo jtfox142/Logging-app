@@ -11,13 +11,11 @@ import SwiftUI
 
 @Model
 class Log {
-    var date: Date
     var name: String
-    var message: String
+    var entries: [Entry]
     
-    init(date: Date = Date(), name: String = "", message: String = "") {
-        self.date = date
+    init(name: String = "", entries: [Entry] = []) {
         self.name = name
-        self.message = message
+        self.entries = entries
     }
 }

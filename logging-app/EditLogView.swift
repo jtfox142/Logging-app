@@ -14,11 +14,21 @@ struct EditLogView: View {
     var body: some View {
         Form {
             TextField("Name", text: $log.name)
-            TextField("Message", text: $log.message, axis: .vertical)
-            DatePicker("Date", selection: $log.date)
+            
+            ForEach(log.entries) { entry in
+                NavigationLink(value: entry) {
+                    VStack(alignment: .leading) {
+                        Text(entry.date, style: .date)
+                            .font(.headline)
+                        Text(entry.desc)
+                            .foregroundColor(.secondary)
+                            .lineLimit(2)
+                    }
+                }
+            }
+            .navigationTitle(log.name)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationTitle(log.name ?? "Edit Log")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -27,7 +37,8 @@ struct EditLogView: View {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Log.self, configurations: config)
         
-        let example = Log(date: Date(), name: "Example Log", message: "Hello, World!")
+        let exampleEntry = Entry(date: Date(), desc: "Hello, World!")
+        let example = Log(name: "Example Log", entries: [exampleEntry])
         return EditLogView(log: example)
             .modelContainer(container)
     } catch {
