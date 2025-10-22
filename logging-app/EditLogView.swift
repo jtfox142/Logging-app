@@ -9,26 +9,38 @@ import SwiftUI
 import SwiftData
 
 struct EditLogView: View {
+    @Environment(\.modelContext) private var modelContext
     @Bindable var log: Log
+    @State private var path = [Entry]()
     
     var body: some View {
-        Form {
-            TextField("Name", text: $log.name)
-            
-            ForEach(log.entries) { entry in
-                NavigationLink(value: entry) {
-                    VStack(alignment: .leading) {
-                        Text(entry.date, style: .date)
-                            .font(.headline)
-                        Text(entry.desc)
-                            .foregroundColor(.secondary)
-                            .lineLimit(2)
+        NavigationStack {
+            Form {
+                ForEach(log.entries) { entry in
+                    NavigationLink(value: entry) {
+                        VStack(alignment: .leading) {
+                            Text(entry.date, style: .date)
+                                .font(.headline)
+                            Text(entry.desc)
+                                .foregroundColor(.secondary)
+                                .lineLimit(2)
+                        }
                     }
                 }
+                .navigationTitle(log.name)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    Button("Add Entries", systemImage: "plus", action: addEntry)
+                }
+                .navigationDestination(for: Entry.self, destination: EditEntryView.init)
             }
-            .navigationTitle(log.name)
-            .navigationBarTitleDisplayMode(.inline)
         }
+    }
+    
+    func addEntry() {
+        let entry = Entry()
+        modelContext.insert(entry)
+        path = [entry]
     }
 }
 

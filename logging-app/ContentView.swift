@@ -25,20 +25,6 @@ struct ContentView: View {
             }
         }*/
         NavigationStack(path: $path) {
-            /*List {
-                ForEach(logs) { log in
-                    NavigationLink(value: log) {
-                        VStack(alignment: .leading) {
-                            Text(log.name)
-                                .font(.headline)
-                            Text(log.message)
-                                .foregroundColor(.secondary)
-                                .lineLimit(2)
-                        }
-                    }
-                }
-                .onDelete(perform: deleteLogs)
-            }*/
             List(logs) { log in
                     NavigationLink(log.name) {
                         LogDetailView(log: log)

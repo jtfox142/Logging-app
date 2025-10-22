@@ -5,45 +5,54 @@
 //  Created by Jacob Fox on 9/9/25.
 //
 
-/*import SwiftUI
+import SwiftUI
+import SwiftData
+import Foundation
 
 struct EditEntryView: View {
-    @State private var newEntry: Entry? = nil
+    @Bindable var entry = Entry()
+    //@State private var newEntry: Entry? = nil
     
     var body: some View {
         Form {
-            TextField("Name", text: $log.name)
             Section("Entries") {
-                ForEach(log.entries) { entry in
                     VStack {
+                        Text(strDate(date: entry.date))
                         Text(entry.desc)
-                        Text(entry.date)
                     }
                     
-                    HStack {
+                    /*HStack {
                         TextField("Add a new entry in \(log.name)", text: $newSightName)
                         TextField("Description", text: $entry.desc, axis: .vertical)
                         DatePicker("Date", selection: $log.date)
                         Button("Add", action: addSight)
-                    }
+                    }*/
                 }
             }
         }
-        .navigationTitle(log.name == "" ? "New Log" : log.name)
-        .navigationBarTitleDisplayMode(.inline)
-    }
     
-    func addEntry() {
+    /*func addEntry() {
         withAnimation {
-            let entry = Entry(date: newEntry.date, desc: newEntry.desc)
-            log.entries.append(entry)
-            newEntry = ""
+            let entry = Entry(date: newEntry?.date ?? Date(), desc: newEntry?.desc ?? "")
+            //log.entries.append(entry)
+            //newEntry = ""
         }
+    }*/
+
+    func strDate(date: Date) -> String {
+        // Create Date Formatter
+        let dateFormatter = DateFormatter()
+
+        // Set Date Format
+        dateFormatter.dateFormat = "MM/dd/YY"
+
+        // Convert Date to String
+        let strDate = dateFormatter.string(from: date)
+        
+        return strDate
     }
-}
 }
 
 #Preview {
     EditEntryView()
 }
-*/
