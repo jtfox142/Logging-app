@@ -36,7 +36,7 @@ struct ContentView: View {
                     Button("Add Logs", systemImage: "plus", action: addLog)
                 }
             }
-            .navigationDestination(for: Log.self, destination: LogDetailView.init)
+            .navigationDestination(for: Log.self, destination: CreateLogView.init)
         }
     }
     
