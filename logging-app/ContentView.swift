@@ -26,15 +26,17 @@ struct ContentView: View {
         }*/
         NavigationStack(path: $path) {
             List(logs) { log in
-                    NavigationLink(log.name) {
-                        LogDetailView(log: log)
-                    }
+                NavigationLink(log.name) {
+                    EditLogView(log: log)
                 }
+            }
             .navigationTitle(Text("Logs"))
             .toolbar {
-                Button("Add Logs", systemImage: "plus", action: addLog)
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Add Logs", systemImage: "plus", action: addLog)
+                }
             }
-            .navigationDestination(for: Log.self, destination: EditLogView.init)
+            .navigationDestination(for: Log.self, destination: LogDetailView.init)
         }
     }
     

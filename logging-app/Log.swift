@@ -13,9 +13,13 @@ import SwiftUI
 class Log {
     var name: String
     var entries: [Entry]
-    
+
     init(name: String = "", entries: [Entry] = []) {
         self.name = name
         self.entries = entries
+    }
+    
+    func add(entry: Entry) {
+        entries.append(entry)
     }
 }

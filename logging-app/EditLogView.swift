@@ -9,15 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct EditLogView: View {
-    @Environment(\.modelContext) private var modelContext
+    //@Environment(\.modelContext) private var modelContext
     @Bindable var log: Log
     @State private var path = [Entry]()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack() {
             Form {
                 ForEach(log.entries) { entry in
-                    NavigationLink(value: entry) {
+                    NavigationLink {
+                        EditEntryView(entry: entry)
+                    } label: {
                         VStack(alignment: .leading) {
                             Text(entry.date, style: .date)
                                 .font(.headline)
@@ -27,20 +29,24 @@ struct EditLogView: View {
                         }
                     }
                 }
-                .navigationTitle(log.name)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    Button("Add Entries", systemImage: "plus", action: addEntry)
+            }
+            .navigationTitle(log.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    NavigationLink("Add entry", value: log)
                 }
-                .navigationDestination(for: Entry.self, destination: EditEntryView.init)
+            }
+            .navigationDestination(for: Log.self) { log in
+                CreateEntryView(log: log)
             }
         }
     }
     
     func addEntry() {
         let entry = Entry()
-        modelContext.insert(entry)
-        path = [entry]
+        log.entries.append(Entry())
+        //modelContext.insert(entry)
     }
 }
 
