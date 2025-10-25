@@ -25,13 +25,20 @@ struct ContentView: View {
             }
         }*/
         NavigationStack(path: $path) {
-            List(logs) { log in
-                NavigationLink(log.name) {
-                    EditLogView(log: log)
+            List {
+                ForEach(logs) { log in
+                    NavigationLink(log.name) {
+                        EditLogView(log: log)
+                    }
                 }
+                .onDelete(perform: deleteLogs)
             }
-            .navigationTitle(Text("Logs"))
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Logs")
+                        .fontWeight(.bold)
+                        .font(.largeTitle)
+                }
                 ToolbarItem(placement: .bottomBar) {
                     Button("Add Logs", systemImage: "plus", action: addLog)
                 }

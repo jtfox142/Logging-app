@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 import Foundation
 
+//TODO: This is basically the same as CreateEntryView. Edit CreateEntryView to be reusable
+
 struct EditEntryView: View {
     @Bindable var entry = Entry()
     //@State private var newEntry: Entry? = nil
@@ -16,40 +18,16 @@ struct EditEntryView: View {
     var body: some View {
         Form {
             Section("Entries") {
-                    VStack {
-                        Text(strDate(date: entry.date))
-                        Text(entry.desc)
-                    }
-                    
-                    /*HStack {
-                        TextField("Add a new entry in \(log.name)", text: $newSightName)
-                        TextField("Description", text: $entry.desc, axis: .vertical)
-                        DatePicker("Date", selection: $log.date)
-                        Button("Add", action: addSight)
-                    }*/
+                VStack {
+                    DatePicker(
+                        "Date Of Entry:",
+                        selection: $entry.date,
+                        displayedComponents: [.date]
+                    )
+                    TextField("Description: ", text: $entry.desc)
                 }
             }
         }
-    
-    /*func addEntry() {
-        withAnimation {
-            let entry = Entry(date: newEntry?.date ?? Date(), desc: newEntry?.desc ?? "")
-            //log.entries.append(entry)
-            //newEntry = ""
-        }
-    }*/
-
-    func strDate(date: Date) -> String {
-        // Create Date Formatter
-        let dateFormatter = DateFormatter()
-
-        // Set Date Format
-        dateFormatter.dateFormat = "MM/dd/YY"
-
-        // Convert Date to String
-        let strDate = dateFormatter.string(from: date)
-        
-        return strDate
     }
 }
 

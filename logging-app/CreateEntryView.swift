@@ -28,6 +28,7 @@ struct CreateEntryView: View {
             Button("Save Entry") {
                 saveEntry(entry: entry)
             }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
     }
     

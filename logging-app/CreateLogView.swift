@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CreateLogView: View {
+    @Environment(\.dismiss) private var dismiss
     @Bindable var log: Log  // ✅ This makes the model editable
     
     var body: some View {
@@ -15,7 +16,15 @@ struct CreateLogView: View {
             Section(header: Text("New Log")) {
                 TextField("Name", text: $log.name)
             }
+            Button("Save Log") {
+                saveAndExit()
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
+    }
+    
+    func saveAndExit() {
+        dismiss()
     }
 }
 

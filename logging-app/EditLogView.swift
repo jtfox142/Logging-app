@@ -26,17 +26,32 @@ struct EditLogView: View {
                     }
                 }
             }
+            .onDelete(perform: deleteEntry)
         }
         .navigationTitle(log.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                TextField(log.name, text: $log.name)
+                    .fontWeight(.bold)
+                    .font(.largeTitle)
+            }
             ToolbarItem(placement: .bottomBar) {
                 NavigationLink("Add entry", destination: CreateEntryView(log: log))
+                    .foregroundStyle(Color.blue)
             }
         }
         /*.navigationDestination(for: Log.self) { log in
             CreateEntryView(log: log)
         }*/
+    }
+    
+    private func deleteEntry(indexSet: IndexSet) {
+        withAnimation {
+            for index in indexSet {
+                log.entries.remove(at: index)
+            }
+        }
     }
 }
 
