@@ -12,6 +12,7 @@ import Foundation
 //TODO: This is basically the same as CreateEntryView. Edit CreateEntryView to be reusable
 
 struct EditEntryView: View {
+    @Environment(\.dismiss) private var dismiss
     @Bindable var entry = Entry()
     //@State private var newEntry: Entry? = nil
     
@@ -25,9 +26,18 @@ struct EditEntryView: View {
                         displayedComponents: [.date]
                     )
                     TextField("Description: ", text: $entry.desc)
+                        .padding(.top, 10)
                 }
             }
+            Button("Save Entry") {
+                saveAndExit()
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
+    }
+    
+    func saveAndExit() {
+        dismiss()
     }
 }
 
