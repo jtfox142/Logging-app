@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var logs: [Log]
     @State private var path = [Log]()
+    @State private var searchText: String = ""
 
     var body: some View {
         /*VStack {
@@ -26,13 +27,14 @@ struct ContentView: View {
         }*/
         NavigationStack(path: $path) {
             List {
-                ForEach(logs) { log in
+                ForEach(searchResults) { log in
                     NavigationLink(log.name) {
                         EditLogView(log: log)
                     }
                 }
-                .onDelete(perform: deleteLogs)
+                .onDelete(perform: deleteLog)
             }
+            .searchable(text: $searchText, prompt: "Search Logs")
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Logs")
@@ -47,13 +49,21 @@ struct ContentView: View {
         }
     }
     
-    func addLog() {
+    var searchResults: [Log] {
+        if(searchText.isEmpty) {
+            return logs
+        } else {
+            return logs.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
+    private func addLog() {
         let log = Log()
         modelContext.insert(log)
         path = [log]
     }
 
-    private func deleteLogs(indexSet: IndexSet) {
+    private func deleteLog(indexSet: IndexSet) {
         withAnimation {
             for index in indexSet {
                 let log = logs[index]
@@ -61,6 +71,10 @@ struct ContentView: View {
             }
         }
     }
+    
+    /*private func searchLogs(text: String) -> [Log] {
+        
+    }*/
 }
 
 #Preview {
