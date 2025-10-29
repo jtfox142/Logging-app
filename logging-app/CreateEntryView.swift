@@ -5,7 +5,7 @@
 //  Created by Jacob Fox on 10/23/25.
 //
 
-//TODO: Discard entry if the back button is pressed. Make description box push text onto next line.
+//TODO: Discard entry if the back button is pressed. Make description box expand downward and push text onto the next line if it overflows.
 
 import SwiftUI
 import SwiftData
