@@ -14,7 +14,7 @@ import Foundation
 struct EditEntryView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var entry = Entry()
-    //@State private var newEntry: Entry? = nil
+    @State private var showDiscardAlert: Bool = false
     
     var body: some View {
         Form {
@@ -29,15 +29,7 @@ struct EditEntryView: View {
                         .padding(.top, 10)
                 }
             }
-            Button("Save Entry") {
-                saveAndExit()
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
         }
-    }
-    
-    func saveAndExit() {
-        dismiss()
     }
 }
 

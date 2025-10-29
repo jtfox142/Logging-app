@@ -14,6 +14,7 @@ struct CreateEntryView: View {
     @Environment(\.dismiss) var dismiss
     @Bindable var log: Log  // ✅ This makes the model editable
     @State private var entry: Entry = Entry()
+    @State private var showDiscardAlert: Bool = false
     
     var body: some View {
         Form {
@@ -29,6 +30,22 @@ struct CreateEntryView: View {
                 saveEntry(entry: entry)
             }
             .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    showDiscardAlert = true;
+                } label: {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
+        .alert("Discard changes?", isPresented: $showDiscardAlert) {
+            Button("Discard", role: .destructive) {
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) { }
         }
     }
     

@@ -7,8 +7,6 @@
 
 //THE MASTER TODO LIST (In logical order of completion)
 
-//TODO: TechDebt: All save buttons are redundant. The back button does the same thing. Make it so that the back button discards the log/entry instead.
-//TODO: TechDebt: Do not allow the user to create a log with an empty string for a name. Enact this by greying out the save button until at least one character has been entered.
 //TODO: TechDebt: CreateEntryView could be edited to be much more reusable. It is emulated with only minor changes in both CreateLogView and EditEntryView
 //TODO: Feature: Make logs and entries sortable
 //TODO: Feature: Add a field to allow for custom tags on logs. Allow the user to sort/search using these custom tags. When the user is typing in the tag field of a log, suggest to autocomplete for tags they've used before

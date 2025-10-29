@@ -15,11 +15,15 @@ struct CreateLogView: View {
     @Bindable var log: Log
     @State private var firstEntry: Entry = Entry()
     @State private var showDiscardAlert: Bool = false
+    @State private var disableSave: Bool = true
     
     var body: some View {
         Form {
             Section(header: Text("New Log")) {
                 TextField("Name", text: $log.name)
+                    .onChange(of: self.log.name) {
+                        disableSave = self.log.name.isEmpty
+                    }
             }
             Section(header: Text("First Entry")) {
                 DatePicker(
@@ -33,6 +37,7 @@ struct CreateLogView: View {
                 saveAndExit()
             }
             .frame(maxWidth: .infinity, alignment: .center)
+            .disabled(disableSave)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
