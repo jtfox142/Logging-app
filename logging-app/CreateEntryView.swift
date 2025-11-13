@@ -12,7 +12,7 @@ import SwiftData
 
 struct CreateEntryView: View {
     @Environment(\.dismiss) var dismiss
-    @Bindable var log: Log  // ✅ This makes the model editable
+    @Bindable var log: Log
     @State private var entry: Entry = Entry()
     @State private var showDiscardAlert: Bool = false
     
