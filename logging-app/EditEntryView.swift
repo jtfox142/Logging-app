@@ -18,16 +18,16 @@ struct EditEntryView: View {
     
     var body: some View {
         Form {
-            Section("Entries") {
-                VStack {
-                    DatePicker(
-                        "Date Of Entry:",
-                        selection: $entry.date,
-                        displayedComponents: [.date]
-                    )
-                    TextField("Description: ", text: $entry.desc)
-                        .padding(.top, 10)
-                }
+            Section("Date") {
+                DatePicker(
+                    "Date Of Entry:",
+                    selection: $entry.date,
+                    displayedComponents: [.date]
+                )
+            }
+            
+            Section("Description") {
+                TextField("Description: ", text: $entry.desc)
             }
         }
     }

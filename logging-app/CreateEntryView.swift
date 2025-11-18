@@ -18,12 +18,14 @@ struct CreateEntryView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("New Entry")) {
+            Section(header: Text("Date")) {
                 DatePicker(
                     "Date Of Entry:",
                     selection: $entry.date,
                     displayedComponents: [.date]
                 )
+            }
+            Section("Description") {
                 TextField("Description:", text: $entry.desc)
             }
             Button("Save Entry") {
