@@ -14,7 +14,7 @@ struct CreateLogView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Bindable var log: Log
-    @State var tagLibrary: TagLibrary
+    @State var tagLibrary: [Tag]
     @State private var firstEntry: Entry = Entry()
     @State private var showDiscardAlert: Bool = false
     @State private var disableSave: Bool = true
@@ -110,8 +110,9 @@ struct CreateLogView: View {
         }
         
         //Check to make sure the tag exists in the Tag Library so that it can be suggested for other logs
-        if(!tagLibrary.tags.contains(where: { $0.lowercased() == name.lowercased() })) {
-            tagLibrary.tags.append(name)
+        if(!tagLibrary.contains(where: { $0.name.lowercased() == name.lowercased() })) {
+            tagLibrary.append(Tag(name: name))
+            modelContext.insert(Tag(name: name))
         }
         
         //If the log already contains the tag, do not attach it again
@@ -136,11 +137,12 @@ struct CreateLogView: View {
         if searchText.isEmpty {
             suggestions = []
         } else {
-            suggestions = tagLibrary.tags.filter { $0.lowercased().contains(searchText.lowercased()) }
+            let tagNames: [String] = tagLibrary.map(\.name)
+            suggestions = tagNames.filter { $0.lowercased().contains(searchText.lowercased()) }
         }
     }
 }
 
 #Preview {
-    CreateLogView(log: Log(), tagLibrary: TagLibrary())
+    CreateLogView(log: Log(), tagLibrary: [])
 }

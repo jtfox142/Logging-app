@@ -14,7 +14,7 @@ struct EditLogView: View {
     let tagIndex: Double = 2
     
     var body: some View {
-        //ZStack for overlaying views. Maybe not the most efficient way to do what I'm trying to do, but TabView was the only alternative that I currently know of and that needs to be at the root
+        //ZStack for overlaying entry and tag views. Maybe not the most efficient way to do what I'm trying to do, but TabView was the only alternative that I currently know of and that needs to be at the root
         ZStack {
             //Entry list
             VStack {

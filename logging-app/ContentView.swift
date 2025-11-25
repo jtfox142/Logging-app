@@ -15,12 +15,30 @@
 import SwiftUI
 import SwiftData
 
+/*struct Token: Identifiable {
+    var id: String { name }
+    var name: String
+}*/
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Log.name) private var logs: [Log]
-    @State var tags: TagLibrary = TagLibrary()
+    @Query private var tagLibrary: [Tag]
     @State private var path = [Log]()
     @State private var searchText: String = ""
+    @State private var selectedTags = [Tag]()
+    
+    var suggestedTags: [Tag] {
+        if searchText.count > 0 {
+            let filteredSearchText = String(searchText.split(separator: "#").last ?? "")
+            let suggestions: [Tag] = tagLibrary.filter {
+                $0.name.localizedCaseInsensitiveContains(filteredSearchText)
+            }
+            return suggestions
+        } else {
+            return []
+        }
+    }
 
     var body: some View {
         /*VStack {
@@ -42,7 +60,14 @@ struct ContentView: View {
                 }
                 .onDelete(perform: deleteLog)
             }
-            .searchable(text: $searchText, prompt: "Type to filter by name, or use # for tags")
+            .searchable(text: $searchText, prompt: "Type to filter by name, or use # for tags", suggestions: {
+                if(searchText.first == "#") {
+                    ForEach(suggestedTags, id: \.self) { tag in
+                        Text(tag.name)
+                            .searchCompletion("#" + tag.name)
+                    }
+                }
+            })
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Logs")
@@ -54,17 +79,26 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: Log.self) { log in
-                CreateLogView(log: log, tagLibrary: tags)
+                CreateLogView(log: log, tagLibrary: tagLibrary)
             }
         }
     }
     
+    //TODO: Filter with multiple tags or with tag and log name
     var searchResults: [Log] {
-        if(searchText.isEmpty) {
-            return logs
-        } else {
-            return logs.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+        var logs = self.logs
+        if searchText.count > 0 {
+            if(searchText.first == "#") {
+                
+                return logs.filter { log in
+                    let tagName = String(searchText.split(separator: "#").last ?? "")
+                    return log.tags.contains(tagName)
+                }
+            }
+            logs = logs.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
+
+        return logs
     }
     
     private func addLog() {
@@ -81,10 +115,6 @@ struct ContentView: View {
             }
         }
     }
-    
-    /*private func searchLogs(text: String) -> [Log] {
-        
-    }*/
 }
 
 #Preview {
