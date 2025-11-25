@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		278CE8A22ECD2E2100BF0443 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 278CE8A12ECD2E2100BF0443 /* WrappingHStack */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		2782B0A42E17407400F566D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				278CE8A22ECD2E2100BF0443 /* WrappingHStack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = "logging-app";
 			packageProductDependencies = (
+				278CE8A12ECD2E2100BF0443 /* WrappingHStack */,
 			);
 			productName = "logging-app";
 			productReference = 2782B0912E17407200F566D1 /* logging-app.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 2782B0882E17407200F566D1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				278CE8A02ECD2E2100BF0443 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2782B0922E17407200F566D1 /* Products */;
 			projectDirPath = "";
@@ -552,6 +561,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		278CE8A02ECD2E2100BF0443 /* XCRemoteSwiftPackageReference "WrappingHStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ksemianov/WrappingHStack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		278CE8A12ECD2E2100BF0443 /* WrappingHStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 278CE8A02ECD2E2100BF0443 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
+			productName = WrappingHStack;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2782B0892E17407200F566D1 /* Project object */;
 }

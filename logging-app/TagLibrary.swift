@@ -1,8 +1,8 @@
 //
-//  Tag.swift
+//  TagLibrary.swift
 //  logging-app
 //
-//  Created by Jacob Fox on 10/29/25.
+//  Created by Jacob Fox on 11/18/25.
 //
 
 import Foundation
@@ -18,4 +18,3 @@ class TagLibrary {
         tags.append(tag)
     }
 }
-
