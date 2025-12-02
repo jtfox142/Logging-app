@@ -9,115 +9,74 @@
 
 //TODO: TechDebt: CreateEntryView could be edited to be much more reusable. It is emulated with only minor changes in both CreateLogView and EditEntryView
 //TODO: Feature: Make logs and entries sortable (Sort by: Default (name), first entry date, latest entry date)
-//TODO: Feature: Add a field to allow for custom tags on logs. Allow the user to sort/search using these custom tags. When the user is typing in the tag field of a log, suggest to autocomplete for tags they've used before
-//TODO: Feature: Create lists. Lists are a parent to logs in the same way logs are a parent to entries. 
+//TODO: TechDebt: Pull Search functions into a utilities folder
+//TODO: Feature: Create lists. Lists are a parent to logs in the same way logs are a parent to entries.
+    // Fix searchbar
+    // Make tags save to modelContext when added through EditLogView
 
 import SwiftUI
 import SwiftData
 
-/*struct Token: Identifiable {
-    var id: String { name }
-    var name: String
-}*/
-
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Log.name) private var logs: [Log]
-    @Query private var tagLibrary: [Tag]
-    @State private var path = [Log]()
-    @State private var searchText: String = ""
-    @State private var selectedTags = [Tag]()
+    @Query var logLists: [ListOfLogs]
+    @State private var path = [ListOfLogs]()
+    @State private var showingAlert: Bool = false
+    @State var userInput: String = ""
     
-    var suggestedTags: [Tag] {
-        if searchText.count > 0 {
-            let filteredSearchText = String(searchText.split(separator: "#").last ?? "")
-            let suggestions: [Tag] = tagLibrary.filter {
-                $0.name.localizedCaseInsensitiveContains(filteredSearchText)
-            }
-            return suggestions
-        } else {
-            return []
-        }
-    }
-
     var body: some View {
         /*VStack {
-            HStack {
-                Text("Logger")
+             HStack {
+                 Text("Logger")
                     .font(.system(size: 48, weight: .bold, design: .monospaced))
-                Image(systemName: "tree.fill")
-                    .symbolRenderingMode(.multicolor)
-                    .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 2.0)))
-                    .font(.system(size: 48))
-            }
-        }*/
+                 Image(systemName: "tree.fill")
+                     .symbolRenderingMode(.multicolor)
+                     .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 2.0)))
+                     .font(.system(size: 48))
+             }
+         }*/
         NavigationStack(path: $path) {
             List {
-                ForEach(searchResults) { log in
-                    NavigationLink(log.name) {
-                        EditLogView(log: log)
+                ForEach(logLists) { list in
+                    NavigationLink(list.name) {
+                        LogView(list: list)
                     }
                 }
-                .onDelete(perform: deleteLog)
+                .onDelete(perform: deleteList)
             }
-            .searchable(text: $searchText, prompt: "Type to filter by name, or use # for tags", suggestions: {
-                if(searchText.first == "#") {
-                    ForEach(suggestedTags, id: \.self) { tag in
-                        Text(tag.name)
-                            .searchCompletion("#" + tag.name)
-                    }
-                }
-            })
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Logs")
+                    Text("Lists")
                         .fontWeight(.bold)
                         .font(.largeTitle)
                 }
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Add Logs", systemImage: "plus", action: addLog)
+                    let alertTitle: String = "Enter new list name: "
+                    let alertButtonText: String = "Confirm"
+                    Button(action: {
+                        showingAlert = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                        .alert(Text(alertTitle),
+                            isPresented: $showingAlert,
+                            actions: {
+                            Button(alertButtonText) { modelContext.insert(ListOfLogs(name: userInput)) }
+                                Button("Cancel", role: .cancel) { }
+                                TextField("Tag Name", text: $userInput)
+                            }
+                    )
                 }
-            }
-            .navigationDestination(for: Log.self) { log in
-                CreateLogView(log: log, tagLibrary: tagLibrary)
             }
         }
     }
     
-    //TODO: Filter with multiple tags or with tag and log name
-    var searchResults: [Log] {
-        var logs = self.logs
-        if searchText.count > 0 {
-            if(searchText.first == "#") {
-                
-                return logs.filter { log in
-                    let tagName = String(searchText.split(separator: "#").last ?? "")
-                    return log.tags.contains(tagName)
-                }
-            }
-            logs = logs.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
-        }
-
-        return logs
-    }
-    
-    private func addLog() {
-        let log = Log()
-        modelContext.insert(log)
-        path = [log]
-    }
-
-    private func deleteLog(indexSet: IndexSet) {
-        withAnimation {
-            for index in indexSet {
-                let log = logs[index]
-                modelContext.delete(log)
-            }
-        }
+    private func deleteList(indexSet: IndexSet) {
+        
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Log.self, inMemory: true)
+        .modelContainer(for: ListOfLogs.self, inMemory: true)
 }

@@ -13,7 +13,8 @@ import SwiftData
 struct CreateLogView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Bindable var log: Log
+    @Bindable var list: ListOfLogs
+    @State var log: Log = Log()
     @State var tagLibrary: [Tag]
     @State private var firstEntry: Entry = Entry()
     @State private var showDiscardAlert: Bool = false
@@ -100,6 +101,7 @@ struct CreateLogView: View {
     
     private func saveAndExit() {
         log.entries.append(firstEntry)
+        list.logs.append(log)
         dismiss()
     }
     
@@ -144,5 +146,7 @@ struct CreateLogView: View {
 }
 
 #Preview {
-    CreateLogView(log: Log(), tagLibrary: [])
+    let exampleLogs: [Log] = [Log(name: "Playboi Carti", entries: [Entry(date: Date(), desc: "Worked on a new track")], tags: ["Music"]), Log(name: "SZA", entries: [], tags: []), Log(name: "Drake", entries: [], tags: [])]
+    let exampleList: ListOfLogs = ListOfLogs(name: "ExampleList", logs: exampleLogs)
+    CreateLogView(list: exampleList, tagLibrary: [])
 }
